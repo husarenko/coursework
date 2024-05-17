@@ -1,0 +1,73 @@
+﻿@model UserPanelViewModel
+@using FoodDeliveryApp.Models.Enums
+
+@{
+    ViewData["Title"] = "Кошик";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кошик</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-white">Оформити замовлення</h1>
+        <form asp-action="Checkout">
+            <div class="form-group text-white">
+                <label for="deliveryAddress">Адреса доставки</label>
+                <input asp-for="CurrentOrder.DeliveryAddress" class="form-control" required />
+            </div>
+            <div class="form-group text-white">
+                <label for="paymentMethod">Спосіб оплати</label>
+                <select asp-for="CurrentOrder.paymentMethod" id="paymentMethod" name="paymentMethod" class="form-control" required>
+                    @foreach (var paymentMethod in Enum.GetValues(typeof(PaymentMethod)))
+                    {
+                        <option value="@paymentMethod">
+                            @paymentMethod
+
+                        </option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-header text-white">Замовити</button>
+        </form>
+        <div class="card text-white mt-4" style="background-color: #fff0; border: none; border-color: #fff0; box-shadow: none;">
+            <div class="card-header">
+                <h3 class="card-title">Ваше замовлення</h3>
+            </div>
+            <div class="card-body" style="background-color: #23532d; border-radius: 15px;">
+                @foreach (var item in Model.Cart)
+                {
+                    <div class="row mb-2 align-items-center">
+                        <div class="col">
+                            <h6 class="mb-0">@item.DishName</h6>
+                        </div>
+                        <div class="col col-lg-2">
+                            <p class="mb-0">@item.Price₴ x @item.Quantity</p>
+                        </div>
+                        <div class="col col-lg-2">
+                            <p class="mb-0"><i class="fa fa-arrow-right" aria-hidden="true" style="margin-right: 15px;"></i> @(item.Quantity * item.Price)₴</p>
+                        </div>
+                        <div class="col-1 col-lg-1 text-center">
+                            <a href="@Url.Action("RemoveFromCart", "User", new { dishId = item.DishId })" class="btn btn-danger btn-sm"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="border-bottom mb-2" style="border-color: #33383e !important;"></div>
+                }
+            </div>
+            <div class="card-footer">
+                <h3>Усього: @Model.Cart.Sum(item => item.Quantity * item.Price)₴</h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+﻿@model UserPanelViewModel
+
+@{
+    ViewData["Title"] = "История заказов";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История заказов</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>История заказов</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Номер заказа</th>
+                            <th>Дата заказа</th>
+                            <th>Общая сумма</th>
+                            <th>Статус</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.OrderHistory)
+                        {
+                            <tr>
+                                <td>@order.Id</td>
+                                <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@order.TotalPrice ₴</td>
+                                <td>@order.Status</td>
+                                <td><a href="@Url.Action("Order", "User", new { orderId = order.Id })" class="btn btn-primary">Просмотреть</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

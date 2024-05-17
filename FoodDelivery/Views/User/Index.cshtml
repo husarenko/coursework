@@ -1,0 +1,198 @@
+﻿@model UserPanelViewModel
+
+@{
+    ViewData["Title"] = "Ресторани";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <style>
+        .restaurant-panel {
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            min-height: 200px;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .restaurant-panel:hover {
+            cursor: crosshair;
+            transform: scale(1.05);
+        }
+
+        .restaurant-panel .panel-body {
+            z-index: 1;
+            color: #fff;
+        }
+        .restaurant-panel .panel-title {
+            font-family: "Manrope", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 24px;
+            background-color: #306b3c;
+            padding: 5px 10px;
+            display: inline-block;
+            margin-bottom: 5px;
+            border-bottom-right-radius: 15px;
+        }
+
+        .restaurant-panel .panel-title:hover{
+            background-color: #23532d;
+        }
+        .restaurant-panel .panel-address {
+            font-family: "Manrope", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 16px;
+            background-color: #306b3c;
+            padding: 3px 8px;
+            display: table;
+            margin-top: 5px;
+        }
+
+        .restaurant-panel .panel-address:hover{
+            background-color: #23532d;
+        }
+        .restaurant-panel .panel-address svg {
+            vertical-align: sub;
+            margin-right: 1px;
+        }
+        .restaurant-panel .panel-footer {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 5px 15px;
+            width: -webkit-fill-available;
+            background-color: #306b3c;
+            z-index: 2;
+/*             display: none; */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .restaurant-panel:hover .panel-footer {
+            opacity: 1;
+        }
+
+        .restaurant-panel .panel-footer:hover{
+            background-color: #23532d;
+        }
+        .restaurant-panel .panel-footer p {
+            margin-bottom: 0rem !important;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var panels = document.querySelectorAll('.restaurant-panel');
+
+            panels.forEach(function (panel) {
+                var panelTitle = panel.querySelector('.panel-title');
+                var panelAddress = panel.querySelector('.panel-address');
+
+                panelTitle.style.height = panelTitle.offsetHeight + 'px';
+                panelAddress.style.height = panelAddress.offsetHeight + 'px';
+            });
+        };
+        document.addEventListener('DOMContentLoaded', function () {
+            var searchForm = document.getElementById('searchForm');
+            var searchInput = document.getElementById('searchInput');
+            var searchBtn = document.getElementById('searchBtn');
+            var restaurantPanels = document.querySelectorAll('.restaurant-panel');
+
+            searchBtn.addEventListener('click', function () {
+                var searchTerm = searchInput.value.trim().toLowerCase();
+
+                restaurantPanels.forEach(function (panel) {
+                    var panelTitle = panel.querySelector('.panel-title');
+                    var restaurantName = panelTitle.textContent.trim().toLowerCase();
+                    var panelParent = panel.parentNode;
+
+                    if (restaurantName.includes(searchTerm)) {
+                        panelParent.style.display = 'block';
+                    } else {
+                        panelParent.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["Message"]
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+        <h1 class="text-white">Ресторани</h1>
+        <div class="row" style="justify-content: center;">
+            <div class="col-md-6">
+                <form id="searchForm">
+                    <div class="input-group mb-3">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Шукайте ресторани за назвою">
+                        <div class="input-group-append">
+                            <button class="btn text-white btn-header" type="button" id="searchBtn">Пошук</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            @foreach (var restaurant in Model.Restaurants)
+            {
+                <div class="col-md-4">
+                    <a href="@Url.Action("MenuList", "User", new { restaurantId = restaurant.Id })" class="restaurant-link">
+                        <div class="panel panel-default restaurant-panel" style="background-image: url('@restaurant.PhotoUrl')">
+                            <div class="panel-body">
+                                <h3 class="panel-title">@restaurant.restaurantName</h3>
+                                <p class="panel-address">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+                                    </svg> @restaurant.Address
+                                </p>
+                                <div class="panel-footer">
+                                    <p style="font-size: 20px;">Переглянути меню</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+ </div>
+</body>
+</html>
+
+
+
+@* <div class="col-md-4">
+                <div class="panel panel-default restaurant-panel" style="background-image: url('@restaurant.PhotoUrl')">
+                    <div class="panel-body">
+                        <h3 class="panel-title">@restaurant.restaurantName</h3>
+                        <p class="panel-address"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/></svg> @restaurant.Address</p>
+                        <div class="panel-footer">
+                             <a href="@Url.Action("MenuList", "User", new { restaurantId = restaurant.Id })">Переглянути меню</a>
+                        </div>
+                    </div>
+                </div>
+            </div> *@

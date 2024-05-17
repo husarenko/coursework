@@ -1,0 +1,239 @@
+﻿@model AdminPanelViewModel
+@using FoodDeliveryApp.Models.Enums
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('.edit-btn').click(function () {
+                var row = $(this).closest('tr');
+                row.find('.editable').each(function () {
+                    var value = $(this).text();
+                    $(this).html('<input type="text" class="form-control" value="' + value + '">');
+                });
+                row.find('.edit-btn, .manage-btn').hide();
+                row.find('.save-btn, .cancel-btn, .delete-btn').show();
+            });
+
+            $('.delete-btn').click(function () {
+                var row = $(this).closest('tr');
+                var restaurantId = row.find('td:first-child').text();
+
+                if (confirm('Ви впевнені що бажаєте видалити ресторан?')) {
+                    $.post('@Url.Action("DeleteRestaurant", "Admin")', { restaurantId: restaurantId })
+                        .done(function () {
+                            row.remove();
+                        })
+                        .fail(function (response) {
+                            alert('Failed to delete restaurant. Error: ' + response.statusText);
+                        });
+                }
+            });
+
+            $('.save-btn').click(function () {
+                var row = $(this).closest('tr');
+                var data = {
+                    id: row.find('td:first-child').text(),
+                    restaurantName: row.find('[data-field="restaurantName"]').find('input').val(),
+                    address: row.find('[data-field="address"]').find('input').val(),
+                    photoUrl: row.find('[data-field="photoUrl"]').find('input').val()
+                };
+                $.post('@Url.Action("UpdateRestaurant", "Admin")', data, function () {
+                    location.reload();
+                });
+            });
+
+            $('.cancel-btn').click(function () {
+                var row = $(this).closest('tr');
+                row.find('.editable').each(function () {
+                    var value = $(this).find('input').val();
+                    $(this).text(value);
+                });
+                row.find('.edit-btn, .manage-btn').show();
+                row.find('.save-btn, .cancel-btn, .delete-btn').hide();
+            });
+
+            $('#myTab a').on('click', function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+        });
+    </script>
+}
+@{
+    ViewData["Title"] = "Manager Panel";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        tbody {
+            background-color: rgb(57 107 59);
+        }
+        thead {
+
+        }
+
+        .nav-link.active{
+            background-color: #343a40 !important;
+        }
+
+        .table th {
+            border-top: 0px solid #0000 !important;
+        }
+
+        .nav-tabs .nav-link.active{
+            border-bottom: none !important;
+        }
+        
+        .tab-content{
+            border-left: 1px solid;
+            border-right: 1px solid;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container text-white">
+        @if (TempData["OrderSuccess"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["OrderSuccess"]
+            </div>
+        }
+        @if (TempData["RestSuccess"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["RestSuccess"]
+            </div>
+        }
+        <h1>Панель менеджера</h1>
+        <div class="profile-container">
+        <form asp-action="AddRestaurant" method="post">
+            <div class="form-group">
+                <label asp-for="restaurant.restaurantName">Ім'я ресторана:</label>
+                <input asp-for="restaurant.restaurantName" class="form-control" required />
+                <span asp-validation-for="restaurant.restaurantName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="restaurant.Address">Адреса:</label>
+                <input asp-for="restaurant.Address" class="form-control" required />
+                <span asp-validation-for="restaurant.Address" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-dark">Додати ресторан</button>
+        </form>
+        </div>
+
+        <hr />
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link text-white active" id="restaurants-tab" data-toggle="tab" href="#restaurants" role="tab" aria-controls="restaurants" aria-selected="true">Ресторани</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" id="persons-tab" data-toggle="tab" href="#persons" role="tab" aria-controls="persons" aria-selected="false">Користувачі</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false">Усі замовлення</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="restaurants" role="tabpanel" aria-labelledby="restaurants-tab" style="border-radius: 15px;">
+                <table class="table text-white table-hover">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>Id ресторана</th>
+                            <th>Ім'я ресторана</th>
+                            <th>Адреса</th>
+                            <th>Фото</th>
+                            <th>Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var restaurant in Model.Restaurants)
+                        {
+                            <tr>
+                                <td>@restaurant.Id</td>
+                                <td><span class="editable" data-field="restaurantName">@restaurant.restaurantName</span></td>
+                                <td><span class="editable" data-field="address">@restaurant.Address</span></td>
+                                <td><span class="editable" data-field="photoUrl">@restaurant.PhotoUrl</span></td>
+                                <td>
+                                    <a href="@Url.Action("ViewMenu", "Admin", new { restaurantId = restaurant.Id })" class="btn btn-dark manage-btn">Меню</a>
+                                    <button type="button" class="btn btn-dark edit-btn">Редагувати</button>
+                                    <button type="button" class="btn btn-dark save-btn" style="display: none;">Зберегти</button>
+                                    <button type="button" class="btn btn-secondary cancel-btn" style="display: none;">Відміна</button>
+                                    <span style="margin-right: 20px;"></span>
+                                    <button type="button" class="btn btn-danger delete-btn" style="display: none;">Видалити</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="persons" role="tabpanel" aria-labelledby="persons-tab" style="border-radius: 15px;">
+                <table class="table text-white table-hover">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>Ім'я користувача</th>
+                            <th>Електрона пошта</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var person in Model.Persons)
+                        {
+                            <tr>
+                                <td>@person.UserName</td>
+                                <td>@person.Email</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab" style="border-radius: 15px;">
+                <table class="table text-white table-hover">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>Номер</th>
+                            <th>Дата</th>
+                            <th>Ім'я користувача</th>
+                            <th>Мобільний телефон</th>
+                            <th>Адреса</th>
+                            <th>Спосіб оплати</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Orders)
+                        {
+                            <tr>
+                                <td>@order.Id</td>
+                                <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@order.UserName</td>
+                                <td>@order.UserPhone</td>
+                                <td>@order.DeliveryAddress</td>
+                                <td>@order.paymentMethod</td>
+                                <td>
+                                <form method="post" asp-action="ChangeOrderStatus">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <select name="status" class="form-control">
+                                        @foreach (var status in Enum.GetValues(typeof(OrderStatus)))
+                                        {
+                                                <!option value="@status" @(status.Equals(order.Status) ? "selected" : "")>@status</!option>
+                                        }
+                                    </select>
+                                        <button type="submit" class="btn btn-dark mt-2">Змінити</button>
+                                </form>
+                                </td>
+                                @* <td><a href="@Url.Action("ChangeOrderStatus", "Admin", new { orderId = order.Id })" class="btn btn-primary">Change status</a></td> *@
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+</div>
+</body>
+</html>

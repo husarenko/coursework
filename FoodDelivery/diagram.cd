@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FoodDeliveryApp.Controllers.AdminController" BaseTypeListCollapsed="true">
+    <Position X="5" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AADFBIAAAAEAAAAIIAAAAIAAEAgAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\AdminController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.123" Collapsed="true" />
+  </Class>
+  <Class Name="FoodDeliveryApp.Controllers.AuthorizeController">
+    <Position X="9.75" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AABABAAAAAAAhAAAAAFAAAIAAAABAAAABAAQAAAAAAA=</HashCode>
+      <FileName>Controllers\AuthorizeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Controllers.UserController" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAHABEAAAAAABAAAAAAAAAEAEABAAAAAAAEAAAgAACA=</HashCode>
+      <FileName>Controllers\UserController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="FoodDelivery.Controllers.HomeController">
+    <Position X="2.75" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAQAAAAAAAAAAIAAAAQAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.Dish">
+    <Position X="20.25" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQAAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Models\Classes\Dish.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.Order">
+    <Position X="15.75" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAACAAAEAAAACAAAACAAAAgAAAAAQAAAAQgAAAAAAQA=</HashCode>
+      <FileName>Models\Classes\Order.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.OrderItem">
+    <Position X="18" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQCAAAAAAAAAAAAAAEAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Models\Classes\OrderItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.Person">
+    <Position X="0.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Classes\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.Restaurant">
+    <Position X="13.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAIAAAAAAAAAgAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Classes\Restaurant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Mvc.Controller" Collapsed="true">
+    <Position X="6.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="18" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Identity.IdentityUser" Collapsed="true">
+    <Position X="0.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.AdminPanelViewModel">
+    <Position X="12.75" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAEAADABAAAAAAAAAAQAAAAACAAAAAAAAAAAAAGAAAA=</HashCode>
+      <FileName>Models\ViewModels\AdminPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.ChangePasswordViewModel">
+    <Position X="17" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABBAAAAAAAAAAAAAAAAABAAAAIAA=</HashCode>
+      <FileName>Models\ViewModels\ChangePasswordViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.ErrorViewModel">
+    <Position X="26.75" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ViewModels\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.LoginViewModel">
+    <Position X="15" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAgAAA=</HashCode>
+      <FileName>Models\ViewModels\LoginViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.RegisterViewModel">
+    <Position X="19.5" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAQAAAAAAAACAAAAIAAAIAA=</HashCode>
+      <FileName>Models\ViewModels\RegisterViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.UserPanelViewModel">
+    <Position X="24.25" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAHAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAoAAAA=</HashCode>
+      <FileName>Models\ViewModels\UserPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodDeliveryApp.Models.ViewProfileViewModel">
+    <Position X="21.75" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAABAAAQAQAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Models\ViewModels\ViewProfileViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="FoodDeliveryApp.Models.Interfaces.IAdmin">
+    <Position X="9" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAFAIAAAAEAAAAIIAAAAIAAAAgAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Models\Interfaces\IAdmin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FoodDeliveryApp.Models.Interfaces.IUser">
+    <Position X="11" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAEAAAAAABAAAAAAAAAEAAABAAAAAAAEAAAgAACA=</HashCode>
+      <FileName>Models\Interfaces\IUser.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="FoodDeliveryApp.Models.Enums.OrderStatus">
+    <Position X="0.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Enums\OrderStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FoodDeliveryApp.Models.Enums.PaymentMethod">
+    <Position X="2.5" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Enums\PaymentMethod.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FoodDeliveryApp.Models.Enums.UserRole">
+    <Position X="4.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Enums\UserRole.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="12" />
+</ClassDiagram>

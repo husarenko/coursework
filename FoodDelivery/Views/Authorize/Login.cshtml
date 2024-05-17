@@ -1,0 +1,74 @@
+﻿@* @model LoginViewModel
+
+<h1>Login</h1>
+
+<form asp-action="Login" method="post">
+    <div>
+        <label asp-for="Email">Email:</label>
+        <input asp-for="Email" required />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="Password">Password:</label>
+        <input asp-for="Password" required />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <input asp-for="RememberMe" type="checkbox" />
+        <label asp-for="RememberMe">Remember me</label>
+    </div>
+    <button type="submit">Login</button>
+
+</form>
+ *@
+
+ @model LoginViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+    </style>
+</head>
+<body>
+<div class="container">
+<h1 class="text-white">Вхід</h1>
+<div class="profile-container">
+<form asp-action="Login" method="post" class="text-white">
+    <div class="form-group">
+        <label asp-for="Email">Електронна пошта:</label>
+        <input asp-for="Email" class="form-control" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password">Пароль:</label>
+        <input asp-for="Password" class="form-control" required />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-check">
+        <input asp-for="RememberMe" type="checkbox" class="form-check-input" style="margin-left: -1.2em;" />
+        <label asp-for="RememberMe" class="form-check-label" style="margin-left: 5px;">Пам'ятати мій вхід</label>
+    </div>
+    <button type="submit" class="btn btn-dark mt-2">Увійти</button>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="text-white mt-3 rounded form-control" style="word-wrap: break-word; background-color: #893c3c">
+            @* @Html.ValidationSummary(false, "", new { @class = "text-white bg-dark rounded" }) *@
+            @if (ViewData.ModelState.ContainsKey(string.Empty))
+            {
+                <span><i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i>@ViewData.ModelState[string.Empty].Errors.FirstOrDefault().ErrorMessage</span>
+            }
+        </div>
+    }
+</form>
+</div>
+</div>
+</body>
+</html>

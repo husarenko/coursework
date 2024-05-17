@@ -1,0 +1,54 @@
+﻿@model RegisterViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+    </style>
+</head>
+<body>
+<div class="container">
+<h1 class="text-white">Реєстрація</h1>
+<div class="profile-container">
+<form asp-action="Register" method="post" class="text-white">
+    <div class="form-group">
+        <label asp-for="Name">Ім'я:</label>
+        <input asp-for="Name" class="form-control"  required />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email">Електронна пошта:</label>
+        <input asp-for="Email" class="form-control"  required />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+    <label asp-for="Phone">Мобільний телефон:</label>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">+380</span>
+        </div>
+        <input asp-for="Phone" class="form-control" maxlength="9" required />
+    </div>
+    <span asp-validation-for="Phone"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password">Пароль:</label>
+        <input asp-for="Password" class="form-control" required />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword">Підтвердіть пароль:</label>
+        <input asp-for="ConfirmPassword" class="form-control"  required />
+        <span asp-validation-for="ConfirmPassword"></span>
+    </div>
+    <button type="submit" class="btn btn-dark mt-2">Зареєструватись</button>
+</form>
+</div>
+</div>
+</body>
+</html>

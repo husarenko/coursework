@@ -1,0 +1,166 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "View";
+}
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-V6OMLIf7Ip5o2uA8rQ4I1AXZf+IBZmCwMvpwwPyOojo8zib+9vD8NtByivpdnDf3" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("https://mir-s3-cdn-cf.behance.net/project_modules/hd/12858a32751817.56929eefe8431.jpg");
+            background-repeat: repeat;
+            background-size: auto;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+
+        header{
+            display: none !important;
+        }
+
+        .logo-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .logo {
+            max-width: 400px;
+            margin-right: 40px;
+            border-radius: 5px;
+            transition: transform 0.5s ease;
+        }
+
+        .panel {
+            font-size: 20px;
+            padding: 20px;
+            background-color: rgba(24, 24, 24, 0.9);
+            color: white;
+            width: 45%;
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        footer{
+            background-color: rgba(0, 0, 0, 0) !important;
+            height: 40px !important;
+            margin-bottom: 20px !important;
+        }
+
+        .footer-container{
+            padding: 5px;
+            color: white;
+            background-color: rgba(30, 30, 30, 0.9);
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .logo-panel.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .logo.animate-in {
+            transform: scale(1.2);
+        }
+
+        .footer-main{
+            display: none;
+        }
+
+        .buttons-container{
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+            <div class="logo-panel">
+                <img src="~/media/logo.png" alt="Logo" class="logo">
+                <div class="panel">
+                    <h2 style="text-align: center;">👋 Вітаємо!</h2>
+                    <p style="text-align: left;">
+                        deliver - доставка замовлення їжі. Працюємо понад 15 років в українському просторі.<br /><br />
+                        Для початку зареєструйтесь або увійдіть у свій акаунт.
+                    </p>
+                <form asp-action="Login" asp-controller="Authorize" method="post">
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <label asp-for="Email"> Email:</label>
+                        <input asp-for="Email" required class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px">
+                        <i class="fas fa-key"></i>
+                        <label asp-for="Password"> Password:</label>
+                        <input asp-for="Password" required type="password" class="form-control show-password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-check" style="margin-top: 10px">
+                        <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
+                        <label class="form-check-label" asp-for="RememberMe">Remember me</label>
+                    </div>
+                    <div class="buttons-container" style="margin-top: 20px">
+                        <button type="submit" class="btn btn-success btn-lg">Увійти</button>
+                        <span style="margin-right: 40px;"></span>
+                        <a href="@Url.Action("Register", "Authorize")" class="btn btn-secondary btn-lg">У мене немає акаунта</a>
+                    </div>
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="text-danger">
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                            @if (ViewData.ModelState.ContainsKey(string.Empty))
+                            {
+                                <span>@ViewData.ModelState[string.Empty].Errors.FirstOrDefault().ErrorMessage</span>
+                            }
+                        </div>
+                    }
+                </form>
+                </div>
+            </div>
+    </div>
+    <footer class="footer-home">
+        <div class="footer-container">
+            &copy; 2024 - deliver
+        </div>
+    </footer>
+    <script>
+        function togglePasswordVisibility(icon) {
+            var input = icon.parentNode.querySelector("input");
+            if (input.classList.contains("show-password")) {
+                input.classList.remove("show-password");
+                icon.innerHTML = '<i class="far fa-eye"></i>';
+            } else {
+                input.classList.add("show-password");
+                icon.innerHTML = '<i class="far fa-eye-slash"></i>';
+            }
+        }
+
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     var showPasswordIcon = document.querySelector('.show-password');
+
+        //     showPasswordIcon.addEventListener('click', function () {
+        //         togglePasswordVisibility(showPasswordIcon);
+        //     });
+        // });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector('.logo-panel').classList.add('animate-in');
+        });
+    </script>
+</body>
+</html>

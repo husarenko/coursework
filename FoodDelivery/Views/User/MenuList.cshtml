@@ -1,0 +1,356 @@
+﻿@* @model UserPanelViewModel
+
+@{
+ViewData["Title"] = "Ресторани";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: "Manrope", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('@Model.restaurant.PhotoUrl');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            padding: 20px;
+            position: relative;
+        }
+        .card-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .card-text {
+            color: #f8f9fa;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .btn-add-cart {
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="@Url.Action("Index", "User")" class="btn btn-primary btn-back">Back to Restaurant Menu</a>
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">@Model.restaurant.restaurantName</h2>
+                    <p class="card-text">@Model.restaurant.Address</p>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach (var dish in Model.Dishes)
+                        {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>@dish.Name - @dish.Price ₴</span>
+                            <div class="input-group ml-3" style="width: 120px;">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" type="button" id="btn-minus-@dish.Id">-</button>
+                                </div>
+                                <input type="text" class="form-control text-center" value="1" id="quantity-@dish.Id" readonly>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="btn-plus-@dish.Id">+</button>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-add-cart ml-3" id="btn-add-cart-@dish.Id" asp-action="AddToCart">Add to Cart</button>
+                        </li>
+                        }
+                    </ul>
+                </div>
+                    <a href="@Url.Action("Cart", "User")" class="btn btn-primary">Перейти в корзину</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".btn-outline-secondary").click(function () {
+            var input = $(this).closest('.input-group').find('input');
+            var currentValue = parseInt(input.val());
+
+            if ($(this).text() === '+') {
+                input.val(currentValue + 1);
+            } else if (currentValue > 1) {
+                input.val(currentValue - 1);
+            }
+        });
+
+            $(".btn-add-cart").click(function () {
+                var dishId = $(this).attr('id').split('-')[3];
+                var quantity = $("#quantity-" + dishId).val();
+
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "User")',
+                    type: 'POST',
+                    data: { dishId: dishId, quantity: quantity },
+                    success: function (response) {
+                        alert("Added to Cart: Dish ID - " + dishId + ", Quantity - " + quantity);
+                    },
+                    error: function (error) {
+                        alert("Error adding to cart: " + error.statusText);
+                    }
+                });
+            });
+    });
+</script>
+
+</body>
+</html>*@
+
+@model UserPanelViewModel
+
+@{
+    ViewData["Title"] = "Ресторани";
+}
+
+@section AdditionalScripts {
+    <a href="@Url.Action("Index", "User")" class="btn btn-header btn-back text-white"><i class="fa fa-arrow-left" aria-hidden="true" style="margin-right: 10px;"></i>Повернутись до списку ресторанів</a>
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: "Manrope", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            background-color: #396b3b !important;
+        }
+
+        .card-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('@Model.restaurant.PhotoUrl');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            padding: 20px;
+            position: relative;
+        }
+
+            .card-header::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            color: #f8f9fa;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .form-control{
+            background-color: #fff0 !important;
+            border: none !important;
+            color: white !important;
+        }
+
+        .btn-add-cart {
+        }
+
+        .toast-header{
+            background-color: rgb(57 96 52);
+        }
+
+        .toast-container:hover{
+            cursor: crosshair;
+        }
+
+        .toast{
+            background-color: rgb(45 84 47);
+            font-size: 18px;
+        }
+
+        .toast .close{
+            text-shadow: none !important;
+        }
+
+        .list-group-item{
+            border: none !important;
+            background-color: #23532d !important;
+        }
+        </style>
+</head>
+<body>
+    <div class="container">
+        @* <a href="@Url.Action("Index", "User")" class="btn btn-header btn-back text-white">Повернутись до списку ресторанів</a> *@
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">@Model.restaurant.restaurantName</h2>
+                        <p class="card-text">@Model.restaurant.Address</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            @foreach (var dish in Model.Dishes)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center text-white" style="margin-bottom: 10px;">
+                                    <span>@dish.Name<br />@dish.Price ₴</span>
+                                    <div class="d-flex align-items-center">
+                                        <div class="input-group" style="width: 120px;">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-light" type="button" id="btn-minus-@dish.Id">-</button>
+                                            </div>
+                                            <input type="text" class="form-control text-center" value="1" id="quantity-@dish.Id" readonly>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-light" type="button" id="btn-plus-@dish.Id">+</button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-header btn-add-cart ml-3" id="btn-add-cart-@dish.Id" data-dish-id="@dish.Id" data-dish-name="@dish.Name"><i class="fas fa-plus" style="color: white;"></i></button>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <a href="@Url.Action("Cart", "User")" class="btn btn-header text-white">Перейти до кошика</a>
+                </div>
+            </div>
+        </div>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="text-danger">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                @if (ViewData.ModelState.ContainsKey(string.Empty))
+                {
+                    <span>@ViewData.ModelState[string.Empty].Errors.FirstOrDefault().ErrorMessage</span>
+                }
+            </div>
+        }
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".btn-outline-light").click(function () {
+                var input = $(this).closest('.input-group').find('input');
+                var currentValue = parseInt(input.val());
+
+                if ($(this).text() === '+') {
+                    input.val(currentValue + 1);
+                } else if (currentValue > 1) {
+                    input.val(currentValue - 1);
+                }
+            });
+
+            $(".btn-add-cart").click(function () {
+                var dishId = $(this).data('dish-id');
+                var dishName = $(this).data('dish-name');
+                var quantity = $("#quantity-" + dishId).val();
+
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "User")',
+                    type: 'POST',
+                    data: { dishId: dishId, quantity: quantity },
+                    success: function (response) {
+                        var toast = `<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                                            <div class="toast-header">
+                                                <strong class="mr-auto text-white">Кошук</strong>
+                                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="toast-body">
+                                                ${dishName}, кіл-сть - ${quantity} було успішно додано!
+                                            </div>
+                                        </div>`;
+
+                        $(".toast-container").append(toast);
+                        $('.toast').toast('show');
+                    },
+                    error: function (error) {
+                        alert("Error adding to cart: " + error.statusText);
+                    }
+                });
+            });
+
+            $(document).on('click', '.toast .close', function () {
+                $(this).closest('.toast').remove();
+            });
+
+        });
+    </script>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 text-white" style="z-index: 9999; margin-bottom: 25px;">
+    </div>
+</body>
+</html>
+
