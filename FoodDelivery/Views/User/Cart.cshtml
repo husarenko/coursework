@@ -31,7 +31,7 @@
                 <select asp-for="CurrentOrder.paymentMethod" id="paymentMethod" name="paymentMethod" class="form-control" required>
                     @foreach (var paymentMethod in Enum.GetValues(typeof(PaymentMethod)))
                     {
-                        <option value="@paymentMethod">
+                        <option value="@((int)paymentMethod)">
                             @paymentMethod
 
                         </option>
