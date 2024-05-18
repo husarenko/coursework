@@ -3,6 +3,7 @@ using FoodDeliveryApp.Models;
 using FoodDeliveryApp.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using FoodDeliveryApp.Models.Interfaces;
+using FoodDeliveryApp.Models.Delegates;
 
 namespace FoodDeliveryApp.Controllers
 {
@@ -14,6 +15,9 @@ namespace FoodDeliveryApp.Controllers
         private readonly PersonContext _personContext;
         private readonly RestaurantContext _restContext;
         private readonly UserManager<Person> _userManager;
+
+        //Delegates
+        public event OrderStatusChangedHandler OnOrderStatusChanged;
 
         public AdminController(PersonContext personContext, RestaurantContext restContext, UserManager<Person> userManager, OrderContext orderContext)
         {
@@ -51,6 +55,10 @@ namespace FoodDeliveryApp.Controllers
             {
                 order.Status = status;
                 _orderContext.SaveChanges();
+
+                //Delegates
+                OnOrderStatusChanged?.Invoke(orderId, status);
+
                 TempData["OrderSuccess"] = "Статус замовлення " + order.Id + " змінений на " + order.Status;
             }
             return RedirectToAction("Index");

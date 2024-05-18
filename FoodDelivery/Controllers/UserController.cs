@@ -165,7 +165,8 @@ namespace FoodDeliveryApp.Controllers
             }).ToList();
 
             //LINQ
-            var totalPrice = orderItems.Sum(item => item.Price * item.Quantity);
+            //var totalPrice = orderItems.Sum(item => item.Price * item.Quantity);
+            var totalPrice = OrderPrice.CalculateTotalPrice(orderItems);
 
             var order = new Order
             {
